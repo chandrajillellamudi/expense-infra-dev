@@ -31,6 +31,8 @@ pipeline {
     }
      post { 
         always { 
+              deleteDir()
+           // cleanWs()
             echo 'I will always say Hello again!'
         }
         success { 
