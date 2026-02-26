@@ -1,0 +1,87 @@
+- name : SG rules
+  sg :
+    - expense-dev-db-sg
+    - expense-dev-backend-sg
+    - expense-dev-frontend-sg
+    - expense-dev-web-alb-sg
+    - expense-dev-bastion-sg
+    - expense-dev-app-alb-sg
+    - expense-dev-vpn-sg
+
+  vpn :
+  - name : vpn-public
+    description : vpn accepting connections from the internet
+    source_sg : public
+    port : 943, 443, 22, 1194
+
+  db :
+  - name : db-backend
+    description : databaseaccepting connections from backend servers
+    source_sg : expense-dev-backend-sg
+    from_port : 3306
+    to_port : 3306
+  - name : db-bastion
+    description : database accepting connections from bastion host
+    source_sg : expense-dev-bastion-sg
+    from_port : 3306
+    to_port : 3306
+  - name : db-vpn
+    description : database accepting connections from vpn
+    source_sg : expense-dev-vpn-sg
+    from_port : 3306
+    to_port : 3306
+
+  app-alb :
+  - name : app-alb-vpn
+    description : application load balancer accepting connections from vpn
+    source_sg : expense-dev-vpn-sg
+    port : 80
+  - name : app-alb-frontend
+    description : application load balancer accepting connections from frontend
+    source_sg : expense-dev-frontend-sg
+    port : 80
+
+
+  backend :
+  - name : backend-app-alb
+    description : backend accepting connections from application load balancer
+    source_sg : expense-dev-app-alb-sg
+    port : 8080
+  - name : backend-bastion
+    description : backend accepting connections from bastion host
+    source_sg : expense-dev-bastion-sg
+    port : 22
+  - name : backend-vpn_ssh
+    description : backend accepting connections from vpn
+    source_sg : expense-dev-vpn-sg
+    port : 22
+  - name : backend-vpn_http
+    description : backend accepting connections from vpn
+    source_sg : expense-dev-vpn-sg
+    port : 8080
+    
+  frontend :
+  - name : frontend-web-alb
+    description : frontend accepting connections from web application load balancer
+    source_sg : expense-dev-web-alb-sg
+    port : 80
+  - name : frontend-bastion
+    description : frontend accepting connections from bastion host
+    source_sg : expense-dev-bastion-sg
+    port : 22
+  - name : frontend-vpn
+    description : frontend accepting connections from vpn
+    source_sg : expense-dev-vpn-sg
+    port : 22
+
+  web-alb :
+  - name : web-alb-public
+    description : web application load balancer accepting connections from the internet
+    source_sg : public
+    port : 80
+
+  bastion :
+  - name : bastion-public
+    description : bastion accepting connections from the internet
+    source_sg : public # Ideally home IP/32
+    port : 22
