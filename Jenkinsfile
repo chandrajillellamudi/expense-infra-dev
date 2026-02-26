@@ -19,20 +19,29 @@ pipeline {
         }
         stage('plan') {
             steps {
-                sh 'echo this is apply stage'
+                sh """
+                cd 1.vpc
+                terraform plan
+                """
         }
     }
     stage('apply') {
+        input {
+                message "Should we continue?"
+                ok "Yes, we should."
+            }
             steps {
-                sh 'echo this is DEPLOY'
-                sh ' echo deployment stage'
+                sh """
+                cd 1.vpc
+                terraform plan
+                """
             }
         }
     }
      post { 
         always { 
-              deleteDir()
-           // cleanWs()
+              deleteDir() //no need of plugin
+           // cleanWs() needs plugin
             echo 'I will always say Hello again!'
         }
         success { 
