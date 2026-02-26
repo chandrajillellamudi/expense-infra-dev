@@ -6,6 +6,7 @@ pipeline {
                
                 timeout(time: 1, unit: 'HOURS')
                 disableConcurrentBuilds() 
+                ansiColor('xterm')
             }
     stages {
         stage('init') {
@@ -18,9 +19,7 @@ pipeline {
         }
         stage('plan') {
             steps {
-                sh """
-                terraform plan
-                """
+                sh 'echo this is apply stage'
         }
     }
     stage('apply') {
