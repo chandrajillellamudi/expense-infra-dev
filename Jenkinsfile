@@ -33,18 +33,18 @@ pipeline {
                 """
         }
     }
-    stage('deploy') {
-        //  when {
-        //         expression {
-        //             params.action == 'Apply'
-        //         }
-        //     }
+    stage('apply') {
+         when {
+                expression {
+                    params.action == 'Apply'
+                }
+            }
         // input {
         //         message "Should we continue?"
         //         ok "Yes, we should."
         //     }
             steps {
-                sh 'echo this is deploy'
+                sh 'echo this is apply'
                 // sh """
                 //  cd 1.vpc
                 //  terraform apply -auto-approve
@@ -52,12 +52,12 @@ pipeline {
             }
         }
 
-    //  stage('destroy') {
-    //         when {
-    //             expression {
-    //                 params.action == 'Destroy'
-    //             }
-    //         }
+     stage('destroy') {
+            when {
+                expression {
+                    params.action == 'Destroy'
+                }
+            }
     //         steps {
     //             sh """
     //             cd 1.vpc
@@ -79,5 +79,7 @@ pipeline {
             echo 'I will always say Hello when pipeline fails'
         }
     }
+    
+
 
 }
