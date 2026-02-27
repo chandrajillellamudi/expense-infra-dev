@@ -58,12 +58,13 @@ pipeline {
                     params.action == 'Destroy'
                 }
             }
-    //         steps {
+              steps {
+                sh 'echo this is destroy'
     //             sh """
     //             cd 1.vpc
     //             terraform destroy -auto-approve
     //             """
-    //     }
+           }
     }
     }
      post { 
